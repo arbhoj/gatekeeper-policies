@@ -26,7 +26,11 @@ kubectl apply -f allowed-repos-example/allowed-repos-constraint.yaml
 kubectl apply -f test-pod.yaml
 ```
 
-
+The rego-tests directors contains an example of how to test a rego rule before injecting it into a `constrainttemplate`. In order to run it you will need to download the OPA cli. Then it can be run as follows
+```
+./opa test rego-tests/. -v
+```
+ 
 **Note:** 
 - All the examples work on a namespace named `test` so create it before proceeding. 
-- For the `https-send-example`apply the `httptestpod.yaml`manifest first as that will create the pod and service from which we are retrieving information at runtime.
+- For the `https-send-example` apply the `httptestpod.yaml`manifest first as that will create the pod and service from which we are retrieving information at runtime.
