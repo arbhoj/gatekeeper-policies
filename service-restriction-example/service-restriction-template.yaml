@@ -1,0 +1,44 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: k8srestrictservicetypes
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sRestrictServiceTypes
+        listKind: K8sRestrictServiceList
+        plural: k8srestrictservicetypes
+        singular: k8srestrictservicetype 
+      validation:
+        openAPIV3Schema:
+          properties:
+            userlist:
+              type: array
+              items: string
+            servicetypelist:
+              type: array
+              items: string
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8restrictservicetypes
+        violation[{"msg": msg, "details": {}}] {
+          user := input.review.userInfo.username
+          not adminUsers(user)
+          ns := input.review.object.metadata.namespace
+          servicetype := input.review.object.spec.type
+          name := input.review.object.metadata.name
+          serviceTypeRestricted(servicetype)
+          msg := sprintf("\n\nServices of type '%v' not allowed \nService: %v \nNamespace: %v  \nUser: %v \nPlease contact admin!\n(%v)", [servicetype , name, ns, user, input.parameters.userlist[_]])
+        }
+        
+        adminUsers(user) {
+          adminlist := input.parameters.userlist[_]
+          user == adminlist 
+        }
+
+        serviceTypeRestricted(servicetype) {
+          st := input.parameters.servicetypelist[_]
+          servicetype == st 
+        }

@@ -1,0 +1,44 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: restrictvolumetypes
+spec:
+  crd:
+    spec:
+      names:
+        kind: RestrictVolumeTypes
+        listKind: RestrictVolumeList
+        plural: restrictvolumetypes
+        singular: restrictvolumetype 
+      validation:
+        openAPIV3Schema:
+          properties:
+            userlist:
+              type: array
+              items: string
+            volumetypelist:
+              type: array
+              items: string
+
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package restrictvolumetypes
+        violation[{"msg": msg, "details": {}}] {
+          ns := input.review.object.metadata.namespace          
+          user := input.review.userInfo.username
+          not adminUsers(user)
+          vol := input.review.object.spec.volumes[_]
+          type := invalidVolume(vol) 
+          msg := sprintf("Volumes of type %v not allowed, pod: %v, namespace %v, volume %v ,user %v. Please contact admin", [type,input.review.object.metadata.name, ns, vol.name,user])
+        }
+        
+        invalidVolume(volume) = type { 
+          type := input.parameters.volumetypelist[_]
+          volume[type]  
+
+        }
+        adminUsers(user) {
+          adminlist := input.parameters.userlist[_]
+          user == adminlist 
+        }

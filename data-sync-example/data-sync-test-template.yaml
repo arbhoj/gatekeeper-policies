@@ -1,0 +1,23 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: datasynctest
+spec:
+  crd:
+    spec:
+      names:
+        kind: DataSyncTest
+        listKind: DataSyncTestList
+        plural: datasynctests
+        singular: datasynctest 
+      validation:
+        openAPIV3Schema:
+
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package datasynctest
+        violation[{"msg": msg, "details": {}}] {
+          mydata := data.inventory.namespace["dispatch"] 
+          msg := sprintf("Data: %v", [mydata])
+        }

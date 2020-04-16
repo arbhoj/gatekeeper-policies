@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-body
+  namespace: test
+data:
+  index.html: |
+    {
+      "user": "arvind",
+      "type": "admin"
+    }
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: httptestpod
+  namespace: test
+  labels:
+    app: httptest
+spec:
+  containers:
+  - image: nginx:alpine
+    name: myengine
+    volumeMounts:
+    - mountPath: /usr/share/nginx/html/index.html
+      subPath: index.html
+      name: defaulthtml
+  volumes:
+  - name: defaulthtml
+    configMap:
+      name: nginx-body 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: httptest
+  name: httptest
+  namespace: test
+spec:
+  ports:
+  - port: 80
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: httptest

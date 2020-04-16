@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: emptydir-deploy
+  name: emptydir-deploy
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: emptydir-deploy
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: emptydir-deploy
+    spec:
+      initContainers:
+      - image: busybox:1.28.4
+        name: mybusyinit
+        command: ["/bin/sh","-c","ls > /cache/test.txt"]
+        volumeMounts:
+        - mountPath: /cache
+          name: cache-volume
+      containers:
+      - image: busybox:1.28.4
+        name: mybusy
+        command: ["/bin/sh","-c","cat /mypod/test.txt && sleep 100000"]
+        volumeMounts:
+        - mountPath: /mypod
+          name: cache-volume
+      volumes:
+      - name: cache-volume
+        emptyDir: {}      

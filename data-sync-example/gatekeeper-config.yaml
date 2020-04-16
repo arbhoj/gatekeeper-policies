@@ -1,0 +1,20 @@
+apiVersion: config.gatekeeper.sh/v1alpha1
+kind: Config
+metadata:
+  name: config
+  namespace: kubeaddons
+spec:
+  sync:
+    syncOnly:
+      - group: ""
+        version: "v1"
+        kind: "Namespace"
+      - group: ""
+        version: "v1"
+        kind: "Service"
+      - group: ""
+        version: "v1"
+        kind: "Pod"
+      - group: "rbac.authorization.k8s.io"
+        version: "v1"
+        kind: "ClusterRoleBinding"

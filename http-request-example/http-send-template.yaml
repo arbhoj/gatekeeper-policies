@@ -1,0 +1,23 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: httpsendtest
+spec:
+  crd:
+    spec:
+      names:
+        kind: HttpSendTest
+        listKind: HttpSendTestList
+        plural: httpsendtests
+        singular: httpsendtest 
+      validation:
+        openAPIV3Schema:
+          properties:
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package httpsendtest
+        violation[{"msg": msg, "details": {}}] {
+          http.send({"method": "get", "url": "http://httptest.test/index.html"}, output) 
+          msg := sprintf("\nUsername: %v \nType: %v\n", [output.body.user, output.body.type])
+        } 

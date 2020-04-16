@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: emptydir-pod
+  namespace: test
+spec:
+  initContainers:
+  - image: busybox:1.28.4
+    name: mybusyinit
+    command: ["/bin/sh","-c","ls > /cache/test.txt"]
+    volumeMounts:
+    - mountPath: /cache
+      name: cache-volume
+  containers:
+  - image: busybox:1.28.4
+    name: mybusy
+    command: ["/bin/sh","-c","cat /mytest/test.txt && sleep 100000"]
+    volumeMounts:
+    - mountPath: /mytest
+      name: cache-volume
+  volumes:
+  - name: cache-volume
+    emptyDir: {}

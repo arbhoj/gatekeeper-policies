@@ -1,0 +1,17 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: K8sRestrictServiceTypes
+metadata:
+  name: k8-restrict-service-types
+spec:
+  match:
+    kinds:
+      - apiGroups: [""]
+        kinds: ["Service"]
+    namespaces: ["test"]
+  parameters:
+    servicetypelist:
+    - "LoadBalancer"
+    userlist:
+    - "abcd"
+    - "def"
+    - "kubernetes-admi"
