@@ -17,11 +17,11 @@ In order to test each:
 ```
 kubectl apply -f allowed-repos-example/allowed-repos-template.yaml
 ```
-- Then the `constraint` object
+- Then create the `constraint` object
 ```
 kubectl apply -f allowed-repos-example/allowed-repos-constraint.yaml
 ```
-- Finally the manifest to trigger the constraint. Use test-pod.yaml for examples where a specific object is not necessary. 
+- Finally create the manifest to trigger the constraint. Use test-pod.yaml for examples where a specific object is not necessary. 
 ```
 kubectl apply -f test-pod.yaml
 ```
