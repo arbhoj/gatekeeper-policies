@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    run: testdeploy
+  name: testdeploy
+  namespace: test
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: testdeploy
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: testdeploy
+    spec:
+      containers:
+      - image: nginx:alpine
+        name: testdeploy

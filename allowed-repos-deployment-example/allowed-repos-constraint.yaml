@@ -1,0 +1,12 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: AllowedRepos
+metadata:
+  name: allowedrepos 
+spec:
+  match:
+    namespaces:
+      - "test"
+  parameters:
+    allowedreposlist:
+      - nono
+      - popo

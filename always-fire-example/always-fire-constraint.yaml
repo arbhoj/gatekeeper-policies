@@ -1,0 +1,8 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: AlwaysFire
+metadata:
+  name: alwaysfire 
+spec:
+  match:
+    namespaces:
+      - "test"

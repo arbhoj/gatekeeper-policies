@@ -1,0 +1,23 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: alwaysfire
+spec:
+  crd:
+    spec:
+      names:
+        kind: AlwaysFire
+        listKind: AlwaysFireList
+        plural: alwaysfires
+        singular: alwaysfire 
+      validation:
+        # Schema for the `parameters` field
+        openAPIV3Schema:
+          properties:
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package alwaysfire
+        violation[{"msg": msg}] {
+          msg := sprintf("%v", [input.review])
+        }

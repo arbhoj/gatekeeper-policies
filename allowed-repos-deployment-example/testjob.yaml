@@ -1,0 +1,17 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    run: testjob
+  name: testjob
+  namespace: test
+spec:
+  template:
+    metadata:
+      labels:
+        run: testdeploy
+    spec:
+      containers:
+      - image: nginx:alpine
+        name: testdeploy
+      restartPolicy: "Never"
