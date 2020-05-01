@@ -1,0 +1,12 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: DataSyncTest
+metadata:
+  name: datasynctestconstraint
+spec:
+  match:
+    kinds:
+      - apiGroups: ["extensions/v1beta1"]
+        kinds: ["Ingress"]
+    namespaces:
+      - test 
+  parameters:

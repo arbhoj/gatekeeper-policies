@@ -18,6 +18,6 @@ spec:
       rego: |
         package httpsendtest
         violation[{"msg": msg, "details": {}}] {
-          http.send({"method": "get", "url": "http://httptest.test/index.html"}, output) 
+          http.send({"method": "get", "url": "http://httptest.sample/index.html"}, output) 
           msg := sprintf("\nUsername: %v \nType: %v\n", [output.body.user, output.body.type])
         } 

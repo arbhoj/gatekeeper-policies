@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: nginx-body
-  namespace: test
+  namespace: sample
 data:
   index.html: |
     {
@@ -14,7 +14,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   name: httptestpod
-  namespace: test
+  namespace: sample
   labels:
     app: httptest
 spec:
@@ -36,7 +36,7 @@ metadata:
   labels:
     app: httptest
   name: httptest
-  namespace: test
+  namespace: sample
 spec:
   ports:
   - port: 80
