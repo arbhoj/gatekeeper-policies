@@ -11,5 +11,5 @@ spec:
       - "test"
   parameters:
     allowedreposlist:
-      - nono
-      - popo
+      - mesosphere
+      - quay.io
