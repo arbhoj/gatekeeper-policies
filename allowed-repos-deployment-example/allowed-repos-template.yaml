@@ -18,6 +18,10 @@ spec:
               type: array
               items:
                 type: string
+            allowednamespacelist:
+              type: array
+              items:
+                type: string
   targets:
     - target: admission.k8s.gatekeeper.sh
       rego: |
@@ -58,7 +62,14 @@ spec:
           msg := sprintf("container <%v> has an invalid image repo <%v>, allowed repos are %v", [container.name, container.image, input.parameters.allowedreposlist])
         }
 
-        notInRepoList(container){ 
-          repo = input.parameters.allowedreposlist[_] 
-          not startswith(container.image, repo)
+        notInRepoList(container){
+          ns := input.review.object.metadata.namespace
+          not allowedNameSpaces(ns)
+          found := [yes | repo = input.parameters.allowedreposlist[_] ; yes = startswith(container.image, repo)]
+          not any(found)
+        }
+
+        allowedNameSpaces(ns){
+          allowednamespace = input.parameters.allowednamespacelist[_]
+          ns == allowednamespace
         }

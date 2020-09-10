@@ -4,7 +4,6 @@ metadata:
   labels:
     run: testjob
   name: testjob
-  namespace: test
 spec:
   template:
     metadata:

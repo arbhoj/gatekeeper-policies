@@ -1,16 +1,22 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ingresstest
+---
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.class: traefik
-  name: vault-ingress
-  namespace: test
+  name: ingresstest
+  namespace: ingresstest
 spec:
   rules:
-  - host: myvault.d2iq.com
+  - host: mytest.d2iq.com
     http:
       paths:
       - path: /
         backend:
-          serviceName: vault
-          servicePort: 8200
+          serviceName: test
+          servicePort: 8080

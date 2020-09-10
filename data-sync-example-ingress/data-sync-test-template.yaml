@@ -18,6 +18,6 @@ spec:
       rego: |
         package datasynctest
         violation[{"msg": msg, "details": {}}] {
-          mydata := data.inventory 
+          mydata := data.inventory.namespace["dispatch"] 
           msg := sprintf("Data: %v", [mydata])
         }

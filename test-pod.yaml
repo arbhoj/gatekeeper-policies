@@ -8,9 +8,3 @@ spec:
   - image: busybox:1.28.4
     name: mybusy
     command: ["/bin/sh","-c","sleep 100000"]
-    volumeMounts:
-    - mountPath: /mytest
-      name: cache-volume
-  volumes:
-  - name: cache-volume
-    emptyDir: {}

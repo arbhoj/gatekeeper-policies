@@ -5,8 +5,9 @@ metadata:
 spec:
   match:
     kinds:
-      - apiGroups: ["extensions/v1beta1"]
+      - apiGroups: ["extensions"]
+        apiVersions: ["v1beta1"]
         kinds: ["Ingress"]
     namespaces:
-      - test 
+      - ingresstest 
   parameters:

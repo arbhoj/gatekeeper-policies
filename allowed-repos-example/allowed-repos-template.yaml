@@ -33,7 +33,7 @@ spec:
           msg := sprintf("container <%v> has an invalid image repo <%v>, allowed repos are %v", [container.name, container.image, input.parameters.allowedreposlist])
         }
 
-        notInRepoList(container){ 
-          repo = input.parameters.allowedreposlist[_] 
-          not startswith(container.image, repo)
+        notInRepoList(container){
+          found := [yes | repo = input.parameters.allowedreposlist[_] ; yes = startswith(container.image, repo)]
+          not any(found) 
         }

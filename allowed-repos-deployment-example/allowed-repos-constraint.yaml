@@ -3,10 +3,10 @@ kind: AllowedRepos
 metadata:
   name: allowedrepos 
 spec:
-  match:
-    namespaces:
-      - "test"
   parameters:
     allowedreposlist:
-      - nono
-      - popo
+      - mesosphere 
+      - quay.io
+    allowednamespacelist:
+      - kubeaddons
+      - kube-system

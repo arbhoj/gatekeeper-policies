@@ -8,5 +8,5 @@ spec:
       - apiGroups: [""]
         kinds: ["Pod"]
     namespaces:
-      - test 
+      - data 
   parameters:

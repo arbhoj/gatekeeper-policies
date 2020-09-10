@@ -6,6 +6,6 @@ metadata:
 spec:
   sync:
     syncOnly:
-      - group: "extensions/v1beta1"
+      - group: ""
         version: "v1"
-        kind: "Ingress"
+        kind: "Pod"
