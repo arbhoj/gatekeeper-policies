@@ -1,0 +1,56 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: alwaysfire
+spec:
+  crd:
+    spec:
+      names:
+        kind: AlwaysFire
+      validation:
+        # Schema for the `parameters` field
+        openAPIV3Schema:
+          properties:
+            storageClassWhiteList:
+              type: array
+              items: string
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package whitelist_storageclass
+        
+        violation[{"msg": msg}] {
+          requested_pvc_claims := {claim_name | claim_name = input.review.object.spec.volumes[_].persistentVolumeClaim.claimName}
+          msg := storageClassAllowed(requested_pvc_claims)
+        }
+
+
+        violation[{"msg": msg}] {
+          requested_pvc_claims := {claim_name | claim_name = input.review.object.spec.template.spec.volumes[_].persistentVolumeClaim.claimName}
+          msg := storageClassAllowed(requested_pvc_claims)
+        }
+
+        
+        violation[{"msg": msg}] {
+          requested_pvc_claims := {claim_name | claim_name = input.review.object.spec.jobTemplate.spec.template.spec.volumes[_].persistentVolumeClaim.claimName}
+          msg := storageClassAllowed(requested_pvc_claims)
+
+        }
+
+        #Note how the variable is returned
+        storageClassAllowed(requested_pvc_claims) = message {
+          # Get allowed storage classes and convert to set
+          allowed_storage_classes := {asc | asc = input.parameters.storageClassWhiteList[_]}
+
+          # get storage classes in pvc and convert to set
+          storage_classes_in_requested_pvc_claims := {storage_classes | storage_classes = data.inventory.namespace[_].v1.PersistentVolumeClaim[requested_pvc_claims[_]].spec.storageClassName}
+
+          # get any storage class used in pvcs that are not allowed
+          disallowed := storage_classes_in_requested_pvc_claims - allowed_storage_classes
+
+          # check if there were any disallowed storage classes in the claim
+          count(disallowed) > 0
+
+          message := sprintf("Persistent volume claim not allowed to use storage class %v. Please use one of these storage classes %v. Storage classes in  pvc claims %v", [disallowed, allowed_storage_classes, storage_classes_in_requested_pvc_claims])
+
+        }

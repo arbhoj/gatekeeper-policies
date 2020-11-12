@@ -1,0 +1,13 @@
+apiVersion: constraints.gatekeeper.sh/v1beta1
+kind: AlwaysFire
+metadata:
+  name: always-fire
+spec:
+  match:
+    namespaces:
+    - "default"
+  parameters:
+    storageClassWhiteList:
+    - standard
+    - testing
+    - awsebscsiprovisioner
