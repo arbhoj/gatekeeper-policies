@@ -13,3 +13,4 @@ spec:
   parameters:
     allowedgroupslist:
       - oidc:mathematicians
+      - system:masters
