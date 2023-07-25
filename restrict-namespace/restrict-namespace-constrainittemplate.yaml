@@ -1,0 +1,31 @@
+apiVersion: templates.gatekeeper.sh/v1beta1
+kind: ConstraintTemplate
+metadata:
+  name: allowedgroups
+spec:
+  crd:
+    spec:
+      names:
+        kind: AllowedGroups
+        shortNames: 
+        - ag
+      validation:
+        openAPIV3Schema:
+          properties:
+            allowedgroupslist:
+              type: array
+              items:
+                type: string
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package allowedgroups
+        violation[{"msg": msg}] {
+            user := input.review.userInfo.username
+            user_groups_set := {user_group | user_group = input.review.userInfo.groups[_]}
+            allowed_groups_set = {allowed_user_group | allowed_user_group = input.parameters.allowedgroupslist[_]}
+            match_found :=  user_groups_set & allowed_groups_set
+            total := count(match_found)
+            total == 0
+        	msg := sprintf("User <%v> belonging to group(s) %v not allowed access to this resource.", [user, user_groups_set])
+        }
