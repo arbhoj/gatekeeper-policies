@@ -7,9 +7,6 @@ spec:
     spec:
       names:
         kind: HttpSendTest
-        listKind: HttpSendTestList
-        plural: httpsendtests
-        singular: httpsendtest 
       validation:
         openAPIV3Schema:
           properties:
