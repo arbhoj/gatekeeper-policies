@@ -7,9 +7,6 @@ spec:
     spec:
       names:
         kind: RestrictVolumeTypes
-        listKind: RestrictVolumeList
-        plural: restrictvolumetypes
-        singular: restrictvolumetype 
       validation:
         openAPIV3Schema:
           properties:
