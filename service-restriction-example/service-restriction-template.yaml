@@ -7,9 +7,6 @@ spec:
     spec:
       names:
         kind: K8sRestrictServiceTypes
-        listKind: K8sRestrictServiceList
-        plural: k8srestrictservicetypes
-        singular: k8srestrictservicetype 
       validation:
         openAPIV3Schema:
           properties:
