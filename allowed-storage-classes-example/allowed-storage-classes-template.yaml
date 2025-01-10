@@ -1,12 +1,12 @@
 apiVersion: templates.gatekeeper.sh/v1beta1
 kind: ConstraintTemplate
 metadata:
-  name: alwaysfire
+  name: allowedsc
 spec:
   crd:
     spec:
       names:
-        kind: AlwaysFire
+        kind: AllowedSC
       validation:
         # Schema for the `parameters` field
         openAPIV3Schema:
