@@ -7,12 +7,8 @@ spec:
     spec:
       names:
         kind: DataSyncTest
-        listKind: DataSyncTestList
-        plural: datasynctests
-        singular: datasynctest 
       validation:
         openAPIV3Schema:
-
   targets:
     - target: admission.k8s.gatekeeper.sh
       rego: |
